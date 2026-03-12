@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>训练时间填报 · 杨汛桥/拱宸桥</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f3f5f9;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            padding: 30px 25px;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            color: #1e2b3a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .subtitle {
+            color: #4a5a6e;
+            margin-bottom: 25px;
+            border-left: 5px solid #0d6efd;
+            padding-left: 16px;
+            background: #f0f4fe;
+            border-radius: 0 20px 20px 0;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+        .form-panel {
+            background: #f8fafd;
+            border-radius: 24px;
+            padding: 25px 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecf2;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 20px;
+            align-items: flex-end;
+        }
+        .form-group {
+            flex: 1 1 160px;
+            min-width: 140px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4b5b6e;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ccd5e0;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #0d6efd;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            align-items: center;
+        }
+        .btn {
+            border: none;
+            background: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            transition: 0.15s;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+            box-shadow: 0 8px 18px rgba(13,110,253,0.3);
+        }
+        .btn-primary:hover {
+            background: #0b5ed7;
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #1e293b;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .btn-success {
+            background: #2b8c5e;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #1f7149;
+        }
+        .table-wrapper {
+            border-radius: 20px;
+            border: 1px solid #e9ecf2;
+            overflow-x: auto;
+            background: white;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.02);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #f2f5f9;
+            color: #1e2b3a;
+            font-weight: 600;
+            padding: 18px 12px;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            background: #eef2f7;
+            border-bottom: 2px solid #cfddee;
+        }
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e3e9f2;
+            color: #233142;
+        }
+        tr:hover td {
+            background-color: #f9fcff;
+        }
+        .badge-campus {
+            background: #d4e1fa;
+            color: #0a3b76;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        .delete-btn {
+            background: none;
+            border: 1px solid #ffb4b4;
+            color: #b02a2a;
+            width: 32px;
+            height: 32px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.15s;
+            font-size: 1.2rem;
+        }
+        .delete-btn:hover {
+            background: #ffe3e3;
+            border-color: #b02a2a;
+        }
+        .footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0 10px;
+            color: #4f6072;
+        }
+        .record-count {
+            background: #e9ecf2;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        .note {
+            background: #fff8e5;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            color: #7a6500;
+            border-left: 4px solid #f7b731;
+            margin: 20px 0 0;
+        }
+        .note i {
+            font-style: normal;
+            background: #fcedc5;
+            padding: 3px 8px;
+            border-radius: 40px;
+        }
+        hr {
+            border: none;
+            border-top: 2px dashed #d9e1ec;
+            margin: 25px 0 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🏋️ 2025-2026 第二学期 · 训练填报</h1>
+    <div class="subtitle">基于杨汛桥 & 拱宸桥校区训练时间表 · 可直接填报/修改，导出Excel报表</div>
+
+    <!-- 填报表单 -->
+    <div class="form-panel">
+        <div class="form-row">
+            <div class="form-group">
+                <label>🏫 校区</label>
+                <select id="campusSelect">
+                    <option value="杨汛桥">杨汛桥</option>
+                    <option value="拱宸桥">拱宸桥</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>⏱️ 时间</label>
+                <input type="text" id="timeInput" placeholder="例: 周一10.11" value="周四10.11">
+            </div>
+            <div class="form-group">
+                <label>📚 班级/课程</label>
+                <input type="text" id="classInput" placeholder="如: 跆拳道提高班" value="啦啦操">
+            </div>
+            <div class="form-group">
+                <label>🧑‍🏫 姓名</label>
+                <input type="text" id="teacherInput" placeholder="教师/负责人" value="吴姝娴">
+            </div>
+            <div class="form-group">
+                <label>🔢 人数</label>
+                <input type="text" id="countInput" placeholder="数字或待定" value="24">
+            </div>
+            <div class="form-group">
+                <label>📍 上课地点</label>
+                <input type="text" id="locationInput" placeholder="如: 形体房" value="形体房">
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" id="addBtn">➕ 添加训练</button>
+            <button class="btn btn-outline" id="clearFormBtn">🔄 清空表单</button>
+            <button class="btn btn-success" id="exportExcelBtn">📥 导出 Excel 报表</button>
+        </div>
+    </div>
+
+    <!-- 数据列表 -->
+    <div class="footer-info">
+        <span class="record-count" id="recordCount">加载中...</span>
+        <span style="font-size:0.85rem;">点击 <span style="background:#ffe3e3; padding:2px 8px; border-radius:20px;">✕</span> 可删除记录</span>
+    </div>
+    <div class="table-wrapper">
+        <table id="recordTable">
+            <thead>
+                <tr>
+                    <th>校区</th><th>时间</th><th>班级/课程</th><th>人数</th><th>姓名</th><th>上课地点</th><th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- 动态渲染 -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 原始表格提示 -->
+    <hr>
+    <div class="note">
+        <i>📌 初始数据源自2025-2026学年第二学期训练时间表（杨汛桥/拱宸桥）</i> 包含校舞蹈队、游泳队、排球、武术、定向、话剧队等，支持继续填报。
+    </div>
+</div>
+
+<script>
+(function() {
+    // ---------- 初始化原始数据 (根据提供的表格手工整理) ----------
+    function createId() {
+        return 'rec_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+    }
+
+    // 初始数据集：从表格中提取的主要记录 (校区,时间,班级,人数,姓名,地点)
+    const initialRecords = [
+        // 杨汛桥
+        { id: createId(), campus: '杨汛桥', time: '周二8.9', className: '跆拳道提高班', count: '待定', teacher: '徐彬', location: '跆拳道馆' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '游泳队', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '校合唱队', count: '待定', teacher: '方一力', location: '大活10-12' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '校戏曲队', count: '待定', teacher: '开红', location: '游泳馆' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '武术', count: '23', teacher: '李丹丹', location: '游泳馆形体房' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '全民', count: '待定', teacher: '颜飞卫', location: '体形' },
+        { id: createId(), campus: '杨汛桥', time: '周二10.11', className: '排舞', count: '待定', teacher: '颜飞卫', location: '体形' },
+        { id: createId(), campus: '杨汛桥', time: '周一10.11', className: '校舞蹈队', count: '待定', teacher: '谢舒怡', location: '大活10-12' },
+        { id: createId(), campus: '杨汛桥', time: '周一10.11', className: '田径', count: '待定', teacher: '熊善虎', location: '田径场' },
+        { id: createId(), campus: '杨汛桥', time: '周一10.11', className: '全民队', count: '待定', teacher: '颜飞卫', location: '体育馆' },
+        { id: createId(), campus: '杨汛桥', time: '周一10.11', className: '排舞', count: '待定', teacher: '颜飞卫', location: '体育馆' },
+        { id: createId(), campus: '杨汛桥', time: '周四8.9', className: '乒乓球', count: '10', teacher: '王凯', location: '乒乓球馆三楼' },
+        { id: createId(), campus: '杨汛桥', time: '周四8.9', className: '啦啦操', count: '15', teacher: '吴姝娴', location: '形体房' },
+        { id: createId(), campus: '杨汛桥', time: '周四10.11', className: '跆拳道提高班', count: '待定', teacher: '徐彬', location: '跆拳道馆' },
+        { id: createId(), campus: '杨汛桥', time: '周四10.11', className: '校舞蹈队', count: '待定', teacher: '谢舒怡', location: '大活10-12' },
+        { id: createId(), campus: '杨汛桥', time: '周四10.11', className: '游泳队', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '杨汛桥', time: '周四10.11', className: '校合唱团', count: '待定', teacher: '方一力', location: '杨汛桥礼堂10-12' },
+        { id: createId(), campus: '杨汛桥', time: '周四10.11', className: '拉丁', count: '24', teacher: '吴姝娴', location: '形体房' },
+        { id: createId(), campus: '杨汛桥', time: '周五8.9', className: '啦啦操', count: '24', teacher: '吴姝娴', location: '形体房' },
+        { id: createId(), campus: '杨汛桥', time: '周五10.11', className: '田径', count: '待定', teacher: '熊善虎', location: '田径场' },
+        { id: createId(), campus: '杨汛桥', time: '周五10.11', className: '杨汛桥话剧队', count: '40', teacher: '陈庆芳', location: '大活中心二楼多功能厅' },
+        { id: createId(), campus: '杨汛桥', time: '周五10.11', className: '乒乓球提高班', count: '20', teacher: '王凯', location: '乒乓球馆三楼' },
+        { id: createId(), campus: '杨汛桥', time: '周五10.11', className: '游泳队', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '杨汛桥', time: '周五10.11', className: '羽毛球', count: '10', teacher: '惠夕蕊', location: '财经' },
+        // 拱宸桥
+        { id: createId(), campus: '拱宸桥', time: '周一10.11', className: '排球提高班训练', count: '40', teacher: '蔡勇', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周一10.11', className: '羽毛球提高班', count: '20', teacher: '惠夕蕊', location: '羽毛馆' },
+        { id: createId(), campus: '拱宸桥', time: '周一10.11', className: '男足提高班', count: '25', teacher: '邢琦', location: '体育场' },
+        { id: createId(), campus: '拱宸桥', time: '周一10.11', className: '网球', count: '15', teacher: '王盛', location: '网球场' },
+        { id: createId(), campus: '拱宸桥', time: '周一10.11', className: '武术', count: '23', teacher: '李丹丹', location: '体育馆102、103' },
+        { id: createId(), campus: '拱宸桥', time: '周二7.8', className: '乒乓球', count: '10', teacher: '王凯', location: '乒乓球馆' },
+        { id: createId(), campus: '拱宸桥', time: '周二10.11', className: '女篮队（仅拱宸桥队员）', count: '10', teacher: '冯英歌', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周二10.11', className: '女足提高班', count: '25', teacher: '邢琦', location: '体育场' },
+        { id: createId(), campus: '拱宸桥', time: '周二10.11', className: '朗诵与主持', count: '40', teacher: '钟纯', location: '多媒体教室' },
+        { id: createId(), campus: '拱宸桥', time: '周二10.11', className: '杭州话剧队', count: '40', teacher: '陈庆芳', location: '杭州树人礼堂' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '羽毛球', count: '待定', teacher: '惠夕蕊', location: '羽毛馆' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '游泳提高', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '篮球提高班', count: '24', teacher: '石一童', location: '篮球馆' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '定向', count: '20', teacher: '徐虹', location: '校园' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '街舞', count: '24', teacher: '吴姝娴', location: '形体房' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '全民', count: '20', teacher: '颜飞卫', location: '体形' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '排舞', count: '待定', teacher: '颜飞卫', location: '体形' },
+        { id: createId(), campus: '拱宸桥', time: '周三10.11', className: '校舞蹈队', count: '待定', teacher: '谢舒怡', location: '大活7-9' },
+        { id: createId(), campus: '拱宸桥', time: '周四10.11', className: '女篮队（两校区合练）', count: '18', teacher: '冯英歌', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周四10.11', className: '田径', count: '待定', teacher: '熊善虎', location: '田径场' },
+        { id: createId(), campus: '拱宸桥', time: '周四10.11', className: '定向提高班', count: '25', teacher: '徐虹', location: '校园' },
+        { id: createId(), campus: '拱宸桥', time: '周四10.11', className: '武术', count: '20', teacher: '李丹丹', location: '体育馆103' },
+        { id: createId(), campus: '拱宸桥', time: '周四10.11', className: '排球提高班训练', count: '40', teacher: '蔡勇', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周六7.8', className: '网球', count: '15', teacher: '王盛', location: '网球场' },
+        { id: createId(), campus: '拱宸桥', time: '周六全天', className: '定向', count: '20', teacher: '徐虹', location: '杭州及周边野外和公园' },
+        { id: createId(), campus: '拱宸桥', time: '周六10.11', className: '游泳队', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '拱宸桥', time: '周日8.9', className: '跆拳道提高班', count: '待定', teacher: '徐彬', location: '商职' },
+        { id: createId(), campus: '拱宸桥', time: '周日7.8', className: '女篮队（两校区合练）', count: '18', teacher: '冯英歌', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周日8.9', className: '男女足', count: '50', teacher: '邢琦', location: '体育场' },
+        { id: createId(), campus: '拱宸桥', time: '周日10.11', className: '男篮', count: '待定', teacher: '石一童', location: '体育馆' },
+        { id: createId(), campus: '拱宸桥', time: '周日10.11', className: '校话剧队', count: '35', teacher: '陈庆芳', location: '杭州树人礼堂' },
+        { id: createId(), campus: '拱宸桥', time: '周日10.11', className: '游泳队', count: '20', teacher: '于玥浛、邵明虎、何佳俪', location: '游泳馆' },
+        { id: createId(), campus: '拱宸桥', time: '周日10.11', className: '健美操', count: '24', teacher: '吴姝娴', location: '形体房' }
+    ];
+
+    // 全局记录数组
+    let records = initialRecords.map(r => ({ ...r, id: r.id || createId() })); // 保证都有id
+
+    // DOM 元素
+    const tbody = document.getElementById('tableBody');
+    const recordSpan = document.getElementById('recordCount');
+    const campusSelect = document.getElementById('campusSelect');
+    const timeInput = document.getElementById('timeInput');
+    const classInput = document.getElementById('classInput');
+    const teacherInput = document.getElementById('teacherInput');
+    const countInput = document.getElementById('countInput');
+    const locationInput = document.getElementById('locationInput');
+    const addBtn = document.getElementById('addBtn');
+    const clearFormBtn = document.getElementById('clearFormBtn');
+    const exportBtn = document.getElementById('exportExcelBtn');
+
+    // 渲染表格
+    function renderTable() {
+        let html = '';
+        records.forEach(record => {
+            html += `<tr>
+                <td><span class="badge-campus">${escapeHtml(record.campus)}</span></td>
+                <td><strong>${escapeHtml(record.time)}</strong></td>
+                <td>${escapeHtml(record.className)}</td>
+                <td>${escapeHtml(record.count)}</td>
+                <td>${escapeHtml(record.teacher)}</td>
+                <td>${escapeHtml(record.location)}</td>
+                <td><button class="delete-btn" data-id="${record.id}">✕</button></td>
+            </tr>`;
+        });
+        tbody.innerHTML = html;
+        recordSpan.innerText = `📋 当前记录数：${records.length} 条`;
+
+        // 绑定删除事件
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                records = records.filter(r => r.id !== id);
+                renderTable();
+            });
+        });
+    }
+
+    // 简单转义
+    function escapeHtml(unsafe) {
+        if (unsafe === undefined || unsafe === null) return '';
+        return String(unsafe)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // 清空表单
+    function clearForm() {
+        timeInput.value = '';
+        classInput.value = '';
+        teacherInput.value = '';
+        countInput.value = '';
+        locationInput.value = '';
+        campusSelect.value = '杨汛桥';
+    }
+
+    // 添加记录
+    function addRecord() {
+        const campus = campusSelect.value.trim();
+        const time = timeInput.value.trim();
+        const className = classInput.value.trim();
+        const teacher = teacherInput.value.trim();
+        const count = countInput.value.trim();
+        const location = locationInput.value.trim();
+
+        if (!campus || !time || !className || !teacher || !count || !location) {
+            alert('请完整填写所有字段（人数可填“待定”）');
+            return;
+        }
+
+        const newRecord = {
+            id: createId(),
+            campus,
+            time,
+            className,
+            count,
+            teacher,
+            location
+        };
+        records.push(newRecord);
+        renderTable();
+        clearForm();      // 可选：添加后清空
+    }
+
+    // 导出为CSV (兼容Excel)
+    function exportToExcel() {
+        if (records.length === 0) {
+            alert('暂无数据可导出');
+            return;
+        }
+
+        // 定义标题 (与表头对应)
+        const headers = ['校区', '时间', '班级/课程', '人数', '姓名', '上课地点'];
+        // 准备数据二维数组
+        const dataRows = records.map(r => [
+            r.campus,
+            r.time,
+            r.className,
+            r.count,
+            r.teacher,
+            r.location
+        ]);
+
+        // 构建CSV内容 (BOM用于UTF-8中文)
+        let csvContent = "\uFEFF" + headers.join(',') + '\n';
+        dataRows.forEach(row => {
+            const escapedRow = row.map(cell => {
+                // 如果包含逗号、换行或双引号，用双引号包裹
+                if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n'))) {
+                    return '"' + cell.replace(/"/g, '""') + '"';
+                }
+                return cell;
+            }).join(',');
+            csvContent += escapedRow + '\n';
+        });
+
+        // 下载
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute('download', '训练时间表_杨汛桥拱宸桥.xls'); // .xls 方便直接打开
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    // 初始化渲染
+    renderTable();
+
+    // 事件绑定
+    addBtn.addEventListener('click', addRecord);
+    clearFormBtn.addEventListener('click', clearForm);
+    exportBtn.addEventListener('click', exportToExcel);
+
+    // 可选的回车快速添加 (监听表单)
+    [timeInput, classInput, teacherInput, countInput, locationInput].forEach(input => {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addRecord();
+            }
+        });
+    });
+
+})();
+</script>
+</body>
+</html>
